@@ -22,7 +22,7 @@ jobs:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSHKEY }}
+          key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSHKEY_PASSPHRASE }}
           source: "."
           target: "/home/${{ secrets.USERNAME }}/Fuyuki-Sheet-Generation"
@@ -36,7 +36,7 @@ jobs:
           host: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
-          KEY: ${{ secrets.SSHKEY }}
+          KEY: ${{ secrets.SSH_KEY }}
           envs: LARGE_SECRET_PASSPHRASE, API_KEY_RAYSHIFT
           passphrase: ${{ secrets.SSHKEY_PASSPHRASE }}
           script: cd /home/${{ secrets.USERNAME }}/Fuyuki-Sheet-Generation && chmod +x ./decrypt.sh && ./decrypt.sh && sbt docker:publishLocal && docker stop fuyuki-gen-sheet && docker run --rm -d -p 9000:9000 --name fuyuki-gen-sheet  fuyuki-gen-sheet:1.0 && sleep 5 && sbt clean
