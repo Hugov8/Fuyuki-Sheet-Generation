@@ -16,6 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35
+        with:
+          since_last_remote_commit: true
+          separator: ","
+
       - name: Copy repository contents via scp
         uses: appleboy/scp-action@master
         with:
@@ -24,7 +31,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSHKEY_PASSPHRASE }}
-          source: "."
+          source: ${{ steps.changed-files.outputs.all_changed_files }}
           target: "/home/${{ secrets.USERNAME }}/Fuyuki-Sheet-Generation"
 
       - name: Executing remote command
