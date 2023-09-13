@@ -38,7 +38,7 @@ jobs:
         uses: appleboy/ssh-action@master
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}  
-          API_KEY_RAYSHIFT: ${{ secrets.API_RAYSHIFT_KEY }}
+          API_KEY_RAYSHIFT: ${{ secrets.API_KEY_RAYSHIFT }}
         with:
           host: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
