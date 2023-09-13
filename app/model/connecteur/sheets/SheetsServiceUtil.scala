@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import com.google.api.services.sheets.v4.model.BatchUpdateValuesRequest
 import model.exception.ConnexionException
+import play.api.Logging
 
 object SheetsServiceUtil {
     val APPLICATION_NAME: String = "Fuyuki-Generation-Sheet"
@@ -21,7 +22,7 @@ object SheetsServiceUtil {
     }
 }
 
-trait ExecutionSheet {
+trait ExecutionSheet extends Logging {
     
     def execute[T](batch: AbstractGoogleClientRequest[T]): Option[T] = {
         try{
@@ -30,7 +31,7 @@ trait ExecutionSheet {
             case e: GoogleJsonResponseException => {
                 e.getStatusCode() match {
                     case 400 => throw new ConnexionException(s"Erreur API Google sheet. Veuillez vérifier le lien fourni et l'id de la war\n${e.getContent()}")
-                    case 429 => Thread.sleep(60_000);execute(batch)
+                    case 429 => logger.info("Sommeil pendant 60s");Thread.sleep(60_000);execute(batch)
                     case _ => throw new ConnexionException(e.getContent())
                 }
             }

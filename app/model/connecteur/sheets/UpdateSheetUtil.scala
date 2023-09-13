@@ -19,7 +19,6 @@ import model.exception.ConnexionException
 import play.api.Logger
 
 trait UpdateSheetUtilAbstractForm[T] extends ExecutionSheet{
-    val logger: Logger = Logger(this.getClass())
     val sheetService: Sheets = SheetsServiceUtil.getSheetsService
     def sendRow2Sheet(row: T, sheetId: String): BatchUpdateValuesResponse
     def addSheet(title: String, spreadsheetId: String) = {

@@ -26,7 +26,7 @@ object ScriptServiceImpl extends ScriptService {
     override val scriptRequester: ScriptRequest = ScriptRequestRayshift
     override val warRequester: WarRequest = WarRequestRayshift
     override def generateWar(idWar: String, mail: String): String = {
-        logger.info(s"Démarrage de la génération de la war $idWar")
+        logger.info(s"Démarrage de la génération de la war $idWar pour $mail")
         val war: War = warRequester.getWarFromId(idWar)
         val spreadSheet: Spreadsheet = SpreadSheetUtil.createSpreadSheet(war.name)
         DriveUtil.shareSpreadsheet(spreadSheet.getSpreadsheetId(), mail)
