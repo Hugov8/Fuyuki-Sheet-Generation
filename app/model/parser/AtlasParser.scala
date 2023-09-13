@@ -22,7 +22,7 @@ object AtlasParser extends Parser[Line] {
         case "[k]" :: queue => (List(), queue)
         case name:: line :: next => {
             val (res, restant) = parseNPC(next)            
-            (Line(NA(), NA(), NA(), NPC(name.substring(1), ""), line, "") :: res, restant)
+            (Line(NA(), NA(), NA(), NPC(name.substring(1), ""), line.replace("[sr]", "[r]"), "") :: res, restant)
         }
         case head :: Nil => throw new ParsingAtlasException(s"Erreur de parsing atlas $head")
         case Nil => (List(), Nil)
