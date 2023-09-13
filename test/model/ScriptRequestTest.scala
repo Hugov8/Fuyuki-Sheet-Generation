@@ -66,6 +66,11 @@ class ScriptRequestTest extends AnyFlatSpec {
         assert(WarRequestRayshift.getListIdRow("8090")==res)
     }
 
+    "List of script story" should "match" in {
+        val res = List("100080010", "100080110", "100080111", "100080210", "100080240", "100080310", "100080410", "100080510", "100080610", "100080710", "100080810", "100080910", "100081010", "100081110", "100081210", "100081310", "100081410", "100081510", "100081610", "100081710", "100081810", "100081820", "100081821", "100081910", "100081911", "100081913", "100081920", "100081922", "100082010", "100082110", "100082111", "100082211")
+        assert(WarRequestRayshift.getListIdRow("108")==res)
+    }
+
     "Name of war" should "match" in {
         val res = "Lostbelt No.5\nAncient Ocean of the Dreadnought Gods, Atlantis"
         assert(res==WarRequestRayshift.getNameRow("305"))
