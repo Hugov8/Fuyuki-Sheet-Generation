@@ -58,7 +58,7 @@ class SheetGenerationController @Inject()(val controllerComponents: ControllerCo
       Redirect(routes.SheetGenerationController.result).flashing("message"->url, "state"->"200")
     } catch {
       case e: ConnexionException => Redirect(routes.SheetGenerationController.result).flashing("message"->e.message, "state"->"500")
-      case e: Throwable => Redirect(routes.SheetGenerationController.result).flashing("message"->Option(e.getMessage()).getOrElse("Erreur inconnue"), "state"->"500")
+      case e: Throwable => Redirect(routes.SheetGenerationController.result).flashing("message"->"Erreur inconnue", "state"->"500")
     }
   }}
 
@@ -82,7 +82,7 @@ class SheetGenerationController @Inject()(val controllerComponents: ControllerCo
           Redirect(routes.SheetGenerationController.result).flashing("message"->url, "state"->"200")
         } catch {
           case e: ConnexionException => Redirect(routes.SheetGenerationController.result).flashing("message"->e.message, "state"->"500")
-          case e: Throwable => Redirect(routes.SheetGenerationController.result).flashing("message"->Option(e.getMessage()).getOrElse("Erreur inconnue"), "state"->"500")
+          case e: Throwable => Redirect(routes.SheetGenerationController.result).flashing("message"->"Erreur inconnue", "state"->"500")
         }
     }
   }
