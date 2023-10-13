@@ -23,14 +23,17 @@ trait WarRequest {
 }
 
 object WarRequestRayshift extends WarRequest {
-
+    val NONE = "\"NONE\""
     val acceptIdRows: JsValue=>List[String] = (resultCall) => {
         val intro = (resultCall \ "mstWar" \"scriptId").get.toString
         //mstquest => [] allScripts => [] ScriptfileName
         val quests: List[String] = (resultCall \ "mstQuest").get.as[List[JsValue]].map(x=>(x \ "allScripts" ).get.as[List[JsValue]])
-            .filter(x => !x.isEmpty).flatMap(x=>x.map(y => (y \ "questId").get.toString + (y \ "phase").get.toString + (y \ "sceneType").get.toString))
+            .filter(x => !x.isEmpty).flatMap(x=>x.map(y => (y \ "scriptFileName").get.toString match {
+                case x if x.apply(0) == '0' => x.substring(1)
+                case y => y
+            }))
         intro match {
-            case "\"NONE\"" => quests
+            case NONE => quests
             case _ => intro::quests
         }
     }
