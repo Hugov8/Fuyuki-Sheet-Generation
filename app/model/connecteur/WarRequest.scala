@@ -28,10 +28,11 @@ object WarRequestRayshift extends WarRequest {
         val intro = (resultCall \ "mstWar" \"scriptId").get.toString
         //mstquest => [] allScripts => [] ScriptfileName
         val quests: List[String] = (resultCall \ "mstQuest").get.as[List[JsValue]].map(x=>(x \ "allScripts" ).get.as[List[JsValue]])
-            .filter(x => !x.isEmpty).flatMap(x=>x.map(y => (y \ "scriptFileName").get.toString match {
-                case x if x.apply(1) == '0' => x.substring(2, x.length()-2)
-                case y => y.substring(1, y.length()-2)
-            }))
+            .filter(x => !x.isEmpty).flatMap(x=>x.map(y => (y \ "scriptFileName").get.toString)).map(s => s.substring(1, s.length()-1))
+            .map(s=> s match {
+                case x if x.charAt(0)=='0' => x.substring(1)
+                case _: String => s
+            })
         intro match {
             case NONE => quests
             case _ => intro::quests
