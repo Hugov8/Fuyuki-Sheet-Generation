@@ -35,7 +35,8 @@ object WarRequestRayshift extends WarRequest {
             })
         intro match {
             case NONE => quests
-            case _ => intro::quests
+            case _ if intro.charAt(1)=='0' => intro.substring(2, intro.length()-1)::quests
+            case _  => intro.substring(1, intro.length()-1)::quests
         }
     }
 
