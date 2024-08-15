@@ -16,12 +16,15 @@ trait ScriptRequest {
       * @return l'url à appeler
       */
     def buildURL(idRow: String): String
-    def getRowScriptText(idRow : String) : String = {
-      val res = requests.get(buildURL(idRow), sslContext=SSLContextConfig.getInstance(), verifySslCerts=false)
-      res.statusCode match {
-        case 200 => res.text()
-        case _ => throw new ConnexionException(s"Erreur lors de l'appel à $uri pour $idRow : ${res.text()}")
-      }
+    def getRowScriptText(idRow : String) : String = try {
+        val res = requests.get(buildURL(idRow), readTimeout = 100_000, sslContext=SSLContextConfig.getInstance(), verifySslCerts=false)
+        res.statusCode match {
+          case 200 => res.text()
+          case _ => throw new ConnexionException(s"Erreur lors de l'appel à $uri pour $idRow : ${res.text()}")
+        }
+      } catch {
+        case e: Throwable => throw new ConnexionException(e.toString())
     }
+    
     def getRowScript(idRow: String) = Row(idRow, parser.parse(getRowScriptText(idRow)))
 }

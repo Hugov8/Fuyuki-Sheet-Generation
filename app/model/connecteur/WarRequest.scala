@@ -11,14 +11,17 @@ trait WarRequest {
     def buildURL(idWar: String): String
     def getListIdRow(idWar: String): List[String]
     def getNameRow(idWar: String): String
-    def getResponse[T](idWar: String, accept: JsValue=>T): T = {
-        val response = requests.get(buildURL(idWar))
+    def getResponse[T](idWar: String, accept: JsValue=>T): T = try {
+        val response = requests.get(buildURL(idWar), readTimeout = 100_000)
         response.statusCode match {
             case 200 => accept(Json.parse(response.text()))
             case 404 => throw new NotExistException(response.text())
             case _ => throw new ConnexionException(s"Script request at $uri : ${response.text()}")
         }
+    } catch  {
+        case e: Throwable => throw new ConnexionException(e.toString())
     }
+
     def getWarFromId(id: String): War
 }
 
