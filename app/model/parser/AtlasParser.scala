@@ -18,11 +18,16 @@ object AtlasParser extends Parser[Line] {
         case Nil => (List(), Nil)
     }
 
-    def parseNPC(script: List[String]): (List[Line], List[String]) = script match {
+    def parseNPC(script: List[String], skipName: Boolean = false): (List[Line], List[String]) = script match {
         case "[k]" :: queue => (List(), queue)
         case name:: line :: next => {
-            val (res, restant) = parseNPC(next)            
-            (Line(NA(), NA(), NA(), NPC(name.substring(1), ""), line.replace("[sr]", "[r]"), "") :: res, restant)
+            if(skipName) {
+                val (res, restant) = parseNPC(line::next)
+                (Line(NA(), NA(), NA(), NPC("/", ""), name.replace("[sr]", "[r]"), "") :: res, restant)
+            } else {
+                val (res, restant) = parseNPC(next)
+                (Line(NA(), NA(), NA(), NPC(name.substring(1), ""), line.replace("[sr]", "[r]"), "") :: res, restant)
+            }
         }
         case head :: Nil => throw new ParsingAtlasException(s"Erreur de parsing atlas $head")
         case Nil => (List(), Nil)
@@ -51,7 +56,7 @@ object AtlasParser extends Parser[Line] {
                         result ++ recurseParse(next)
                     }
                     case _: Char => {
-                        val (result, next) = parseNPC(script)
+                        val (result, next) = parseNPC(script, true)
                         result ++ recurseParse(next)
                     }
                 }
