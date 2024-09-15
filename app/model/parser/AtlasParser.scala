@@ -4,8 +4,9 @@ import model.data._
 import model.data
 import model.exception.ConnexionException
 import model.exception.ParsingAtlasException
+import play.api.Logging
 
-object AtlasParser extends Parser[Line] {
+object AtlasParser extends Parser[Line] with Logging {
     val arobase: Char = '＠'
     val dollar: Char = '＄'
     val interrogation: Char = '？'
@@ -56,6 +57,7 @@ object AtlasParser extends Parser[Line] {
                         result ++ recurseParse(next)
                     }
                     case _: Char => {
+                        logger.warn(s"Attention ligne $script risque de décalage")
                         val (result, next) = parseNPC(script, true)
                         result ++ recurseParse(next)
                     }
