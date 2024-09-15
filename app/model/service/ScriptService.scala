@@ -20,6 +20,7 @@ trait ScriptService extends Logging{
     val scriptRequester: ScriptRequest
     def generateWar(idWar: String, mail: String): String
     def updateWar(idWar: String, idSpreadSheet: String): String
+    def updateWar(idWar: String, idSpreadSheet: String, addSheet: Boolean): String
 }
 
 object ScriptServiceImpl extends ScriptService {
@@ -33,7 +34,7 @@ object ScriptServiceImpl extends ScriptService {
         updateWar(idWar, spreadSheet.getSpreadsheetId(), true)
     }
 
-    def updateWar(idWar: String, idSpreadSheet: String, addSheet: Boolean = false): String = {
+    override def updateWar(idWar: String, idSpreadSheet: String, addSheet: Boolean = false): String = {
         logger.info(s"Démarrage de la mise à jour de la sheet $idSpreadSheet pour la war $idWar")
         val war: War = warRequester.getWarFromId(idWar)
         war.idRows.filter(_.id.substring(0,2)!="91").foreach(id => {
