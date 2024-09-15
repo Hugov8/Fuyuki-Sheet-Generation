@@ -9,6 +9,8 @@ GET     /                           controllers.SheetGenerationController.index(
 GET     /generateSheet              controllers.SheetGenerationController.generateSheet(idWar: String, shareToMail: String)
 # Generate sheet route
 GET     /updateSheet                controllers.SheetGenerationController.updateSheet(idWar: String, idSpreadsheet: String)
+# Generate sheet route
+GET     /updateSheetAddSheet        controllers.SheetGenerationController.updateSheetAddSheet(idWar: String, idSpreadsheet: String)
 # Generate from form
 POST    /generateSheetFromForm      controllers.SheetGenerationController.generateSheetForm
 POST    /updateSheetFromForm        controllers.SheetGenerationController.updateSheetForm

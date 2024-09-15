@@ -87,6 +87,18 @@ class SheetGenerationController @Inject()(val controllerComponents: ControllerCo
     }
   }
 
+  def updateSheetAddSheet(idWar: String, idSpreadsheet: String) = Action {
+    implicit request: Request[AnyContent] => {
+        try {
+          val url = ServiceLocator.scriptService.updateWar(idWar, idSpreadsheet, true)
+          Redirect(routes.SheetGenerationController.result).flashing("message"->url, "state"->"200")
+        } catch {
+          case e: ConnexionException => Redirect(routes.SheetGenerationController.result).flashing("message"->e.message, "state"->"500")
+          case e: Throwable => Redirect(routes.SheetGenerationController.result).flashing("message"->"Erreur inconnue", "state"->"500")
+        }
+    }
+  }
+
   def result = Action {
     implicit request: Request[AnyContent] => {
       request.flash.get("state").getOrElse("ko") match {
