@@ -49,7 +49,11 @@ object AtlasParser extends Parser[Line] {
                     case `interrogation` => {
                         val (result, next) = parseMaster(script)
                         result ++ recurseParse(next)
-                    } 
+                    }
+                    case _: Char => {
+                        val (result, next) = parseNPC(script)
+                        result ++ recurseParse(next)
+                    }
                 }
             }
         }
