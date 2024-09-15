@@ -32,9 +32,10 @@ object UpdateSheetUtil extends UpdateSheetUtilAbstractForm[Row] {
     override def sendRow2Sheet(row: Row, spreadsheetId: String): BatchUpdateValuesResponse = {
         val letter: String = "H"
         val number: Int = 3 + row.lines.length
-        val sheetName: String = "'"+row.idRow+"'!"
-        val rangeScript: String = "'"+row.idRow+"'!A3:"+letter+number
-        val data: List[ValueRange] = List(new ValueRange().setRange(sheetName+"D1").setValues(Arrays.asList(Arrays.asList(row.idRow.asInstanceOf[Object]))), 
+        val sheetName: String = "'"+row.idRow.id+"'!"
+        val rangeScript: String = "'"+row.idRow.id+"'!A3:"+letter+number
+        val data: List[ValueRange] = List(
+            new ValueRange().setRange(sheetName+"D1").setValues(Arrays.asList(Arrays.asList(row.idRow.id.asInstanceOf[Object]))), 
             new ValueRange().setRange(sheetName+"D2").setValues(Arrays.asList(Arrays.asList("ENName", "JPName", "English", "Japanese", "French", "Character limit"))),
             row.setRange(rangeScript))
         val batchBody: BatchUpdateValuesRequest = new BatchUpdateValuesRequest().setValueInputOption("USER_ENTERED").setData(data.asJava);

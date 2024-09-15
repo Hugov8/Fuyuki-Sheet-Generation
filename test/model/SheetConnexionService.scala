@@ -34,8 +34,8 @@ class SheetConnexionServiceTest extends AnyFlatSpec {
     }
 
     "Row" should "send to sheet" in {
-        val row: Row = ScriptRequestRayshift.getRowScript("100072161")
-        UpdateSheetUtil.addSheet(row.idRow, SPREADSHEET_ID)
+        val row: Row = ScriptRequestRayshift.getRowScript(IdRow("100072161", "0100072161"))
+        UpdateSheetUtil.addSheet(row.idRow.id, SPREADSHEET_ID)
         UpdateSheetUtil.sendRow2Sheet(row, SPREADSHEET_ID)
     }
 

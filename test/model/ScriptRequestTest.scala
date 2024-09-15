@@ -12,7 +12,7 @@ class ScriptRequestTest extends AnyFlatSpec {
     "List of id row" should "be" in {
         val res = List("9400910110", "9400910111", "9400910210", "9400910211", "9400910310", "9400910311", "9400910410", "9400910420", "9400910421", "9400910510", "9400910511",
         "9400910610", "9400910611", "9400910710", "9400910720", "9400910721")
-        assert(res==WarRequestRayshift.getListIdRow("8091"))
+        assert(res==WarRequestRayshift.getListIdRow("8091").map(_.id))
     }
 
     "Url's result from build main" should "match" in {
@@ -30,8 +30,8 @@ class ScriptRequestTest extends AnyFlatSpec {
         Line("550319","1","1",NPC("Dr. Roman","Dr.ロマン"), "Hurry! At the rate she's going, she'll only need a few more minutes to climb out! Destroy her core, no matter what!","あの巨体なら数分もかからない！ なんとしても本体を叩くんだ！"),
         Line("550320","1","2",NPC("Mash","マシュ"),"Understood...! Master, your orders, please! Beast II cleanup operation begins now!","はい……！　マスター、指示を！ これよりビーストⅡ掃討戦を開始します！")
         )
-        val res: Row = Row("100072150", lines)
-        assert(ScriptRequestRayshift.getRowScript("100072150") == res)
+        val res: Row = Row(IdRow("100072150", "0100072150"), lines)
+        assert(ScriptRequestRayshift.getRowScript(IdRow("100072150", "0100072150")) == res)
     }
 
     "Parsing the row 2161" should "match" in {
@@ -41,8 +41,8 @@ class ScriptRequestTest extends AnyFlatSpec {
         Line("451761","1","3",NPC("Fou","フォウ"),"Fou, fooooou!","フォウ、フォ[line 3]ウ！"),
         Line("451762","1","4",NPC("Mash","マシュ"),"Master, give me your hand...!","マスター、手を……！"),
         Line("451763","2","0",Master("1"),"Mash...!","マシュ……！"))
-        val res: Row = Row("100072161", lines)
-        assert(ScriptRequestRayshift.getRowScript("100072161")==res)
+        val res: Row = Row(IdRow("100072161","0100072161"), lines)
+        assert(ScriptRequestRayshift.getRowScript(IdRow("100072161","0100072161"))==res)
     }
 
     "Parsing the row 2161 with Atals" should "match" in {
@@ -52,8 +52,8 @@ class ScriptRequestTest extends AnyFlatSpec {
         Line(NA(), NA(), NA(),NPC("Fou",""),"Fou, fooooou!",""),
         Line(NA(), NA(), NA(),NPC("Mash",""),"Master, give me your hand...!",""),
         Line(NA(), NA(), NA(),Master("1"),"Mash...!",""))
-        val res: Row = Row("100072161", lines)
-        assert(ScriptRequestAtlas.getRowScript("100072161")==res)
+        val res: Row = Row(IdRow("100072161", "0100072161"), lines)
+        assert(ScriptRequestAtlas.getRowScript(IdRow("100072161", "0100072161"))==res)
     }
 
     "Parse and unparse" should "match" in {
@@ -63,12 +63,12 @@ class ScriptRequestTest extends AnyFlatSpec {
 
     "List of script" should "match" in {
         val res = List("9400090110","9400090111","9400090210","9400090211","9400090310","9400090320","9400090321","9400090410","9400090411","9400090510","9400090511","9400090610","9400090611")
-        assert(WarRequestRayshift.getListIdRow("8090")==res)
+        assert(WarRequestRayshift.getListIdRow("8090").map(_.id)==res)
     }
 
     "List of script story" should "match" in {
         val res = List("100080010", "100080110", "100080111", "100080210", "100080240", "100080310", "100080410", "100080510", "100080610", "100080710", "100080810", "100080910", "100081010", "100081110", "100081210", "100081310", "100081410", "100081510", "100081610", "100081710", "100081810", "100081820", "100081821", "100081910", "100081911", "100081913", "100081920", "100081922", "100082010", "100082110", "100082111", "100082211")
-        assert(WarRequestRayshift.getListIdRow("108")==res)
+        assert(WarRequestRayshift.getListIdRow("108").map(_.id)==res)
     }
 
     "Name of war" should "match" in {

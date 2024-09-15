@@ -32,19 +32,21 @@ object ScriptServiceImpl extends ScriptService {
         DriveUtil.shareSpreadsheet(spreadSheet.getSpreadsheetId(), mail)
         updateWar(idWar, spreadSheet.getSpreadsheetId(), true)
     }
+
     def updateWar(idWar: String, idSpreadSheet: String, addSheet: Boolean = false): String = {
         logger.info(s"Démarrage de la mise à jour de la sheet $idSpreadSheet pour la war $idWar")
         val war: War = warRequester.getWarFromId(idWar)
-        war.idRows.filter(_.substring(0,2)!="91").foreach(id => {
+        war.idRows.filter(_.id.substring(0,2)!="91").foreach(id => {
             val rowRayshift: Row = scriptRequester.getRowScript(id)
             val rowAtlas: Row = ScriptRequestAtlas.getRowScript(id)
             val row: Row = Row(rowRayshift.idRow, ParserAssembler.associateRayshiftAtlas(rowRayshift.lines, rowAtlas.lines))
             if(addSheet){
-                UpdateSheetUtil.addSheet(row.idRow, idSpreadSheet)
+                UpdateSheetUtil.addSheet(row.idRow.id, idSpreadSheet)
             }
             UpdateSheetUtil.sendRow2Sheet(row, idSpreadSheet)
         })
         SheetsServiceUtil.baseURISheet+idSpreadSheet+"/edit"
     }
+
     override def updateWar(idWar: String, idSpreadSheet: String): String = updateWar(idWar, idSpreadSheet, false)
 }
