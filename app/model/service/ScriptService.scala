@@ -24,6 +24,7 @@ trait ScriptService extends Logging{
 }
 
 object ScriptServiceImpl extends ScriptService {
+    val skipRow: List[String] = List("300091351")
     override val scriptRequester: ScriptRequest = ScriptRequestRayshift
     override val warRequester: WarRequest = WarRequestRayshift
     override def generateWar(idWar: String, mail: String): String = {
@@ -37,7 +38,7 @@ object ScriptServiceImpl extends ScriptService {
     override def updateWar(idWar: String, idSpreadSheet: String, addSheet: Boolean = false): String = {
         logger.info(s"Démarrage de la mise à jour de la sheet $idSpreadSheet pour la war $idWar")
         val war: War = warRequester.getWarFromId(idWar)
-        war.idRows.filter(_.id.substring(0,2)!="91").foreach(id => {
+        war.idRows.filter(x => x.id.substring(0,2)!="91" && !skipRow.contains(x.id)).foreach(id => {
             val rowRayshift: Row = scriptRequester.getRowScript(id)
             val rowAtlas: Row = ScriptRequestAtlas.getRowScript(id)
             val row: Row = Row(rowRayshift.idRow, ParserAssembler.associateRayshiftAtlas(rowRayshift.lines, rowAtlas.lines))
