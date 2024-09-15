@@ -5,6 +5,7 @@ import model.data.Row
 import model.data.Line
 import model.parser.Parser
 import model.exception.ConnexionException
+import model.data.IdRow
 
 trait ScriptRequest {
     val uri: String
@@ -26,5 +27,5 @@ trait ScriptRequest {
         case e: Throwable => throw new ConnexionException(e.toString())
     }
     
-    def getRowScript(idRow: String) = Row(idRow, parser.parse(getRowScriptText(idRow)))
+    def getRowScript(idRow: IdRow) = Row(idRow, parser.parse(getRowScriptText(idRow.scriptFileName)))
 }

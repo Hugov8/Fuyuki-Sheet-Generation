@@ -21,7 +21,7 @@ class Row2SheetTest extends AnyFlatSpec {
         Line("451761","1","3",NPC("Fou","フォウ"),"Fou, fooooou!","フォウ、フォ[line 3]ウ！"),
         Line("451762","1","4",NPC("Mash","マシュ"),"Master, give me your hand...!","マスター、手を……！"),
         Line("451763","2","0",Master("1"),"Mash...!","マシュ……！"))
-        val res: Row = Row("100072161", lines)
+        val res: Row = Row(IdRow("100072161", "100072161"), lines)
 
         val body = new ValueRange().setValues(Arrays.asList(
             Arrays.asList("451758","1","0","Mash","マシュ","We've detached Beast II from the wall! She's falling to the bottom of the underworld!","ビーストⅡ、壁から[#剥離:はくり]！ 冥界の底に落ちていきます！"),
