@@ -62,7 +62,7 @@ object UpdateSheetUtil extends UpdateSheetUtilAbstractForm[Row] {
         }
     }
 
-    def getIdsSheet(spreadsheetId: String): List[String] = sheetService.spreadsheets().get(spreadsheetId).execute().getSheets().asScala.map(s => s.getProperties().getTitle()).toList
+    override def getIdsSheet(spreadsheetId: String): List[String] = sheetService.spreadsheets().get(spreadsheetId).execute().getSheets().asScala.map(s => s.getProperties().getTitle()).toList
 
     implicit def row2ValueRange(row:Row): ValueRange = new ValueRange().setValues(row.lines.map(_.getListOfString.map(_.asInstanceOf[Object]).asJava).asJava)
 }
