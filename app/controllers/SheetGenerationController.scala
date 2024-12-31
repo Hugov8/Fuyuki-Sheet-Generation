@@ -9,6 +9,7 @@ import model.data.UpdateSheetForm
 import play.api.data.Forms._
 import play.api.data._
 import play.api.data.validation.Constraints._
+import play.api.Logging
 
 import io.lemonlabs.uri._
 import model.exception.ConnexionException
@@ -17,8 +18,9 @@ import model.exception.ConnexionException
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
+//TODO Gérer log correctement
 @Singleton
-class SheetGenerationController @Inject()(val controllerComponents: ControllerComponents) extends BaseController with play.api.i18n.I18nSupport {
+class SheetGenerationController @Inject()(val controllerComponents: ControllerComponents) extends BaseController with play.api.i18n.I18nSupport with Logging {
   /**
    * Create an Action to render an HTML page.
    *
@@ -81,8 +83,14 @@ class SheetGenerationController @Inject()(val controllerComponents: ControllerCo
           val url = ServiceLocator.scriptService.updateWar(idWar, idSpreadsheet)
           Redirect(routes.SheetGenerationController.result).flashing("message"->url, "state"->"200")
         } catch {
-          case e: ConnexionException => Redirect(routes.SheetGenerationController.result).flashing("message"->e.message, "state"->"500")
-          case e: Throwable => Redirect(routes.SheetGenerationController.result).flashing("message"->"Erreur inconnue", "state"->"500")
+          case e: ConnexionException => {
+            logger.error(e.getMessage())
+            Redirect(routes.SheetGenerationController.result).flashing("message"->e.message, "state"->"500")
+          }
+          case e: Throwable => {
+            logger.error(e.getMessage())
+            Redirect(routes.SheetGenerationController.result).flashing("message"->"Erreur inconnue", "state"->"500")
+          }
         }
     }
   }
