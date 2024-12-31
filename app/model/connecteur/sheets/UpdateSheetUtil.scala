@@ -21,6 +21,8 @@ import play.api.Logger
 trait UpdateSheetUtilAbstractForm[T] extends ExecutionSheet{
     val sheetService: Sheets = SheetsServiceUtil.getSheetsService
     def sendRow2Sheet(row: T, sheetId: String): BatchUpdateValuesResponse
+    def sendListIdsRowToSheet(ids: List[String], sheetId: String, firstSheetName: String)
+    def getIdsSheet(spreadsheetId: String): List[String]
     def addSheet(title: String, spreadsheetId: String) = {
         val requests = List(new Request().setAddSheet(new AddSheetRequest().setProperties(new SheetProperties().setTitle(title))))
         logger.info(s"Création de la sheet $title dans la spreadsheet $spreadsheetId")
@@ -45,6 +47,22 @@ object UpdateSheetUtil extends UpdateSheetUtilAbstractForm[Row] {
             case None => throw new ConnexionException(s"SendRow2Sheet a échoué avec row = $row\n et spreadsheet = $spreadsheetId")
         }
     }
+
+    override def sendListIdsRowToSheet(ids: List[String], sheetId: String, firstSheetName: String): Unit = {
+        val letter: String = "Y"
+        val sheetName: String = s"'$firstSheetName'!"
+        val data: List[ValueRange] = List(
+            new ValueRange().setRange(sheetName+s"${letter}3").setValues(ids.map(x => List(x.asInstanceOf[Object]).asJava).asJava)
+        )
+        val batchBody: BatchUpdateValuesRequest = new BatchUpdateValuesRequest().setValueInputOption("USER_ENTERED").setData(data.asJava);
+        
+        execute(sheetService.spreadsheets().values().batchUpdate(sheetId, batchBody)) match {
+            case Some(x) => x
+            case None => throw new ConnexionException(s"sendListIdsRowToSheet a échoué avec spreadsheet = $sheetId")
+        }
+    }
+
+    def getIdsSheet(spreadsheetId: String): List[String] = sheetService.spreadsheets().get(spreadsheetId).execute().getSheets().asScala.map(s => s.getProperties().getTitle()).toList
 
     implicit def row2ValueRange(row:Row): ValueRange = new ValueRange().setValues(row.lines.map(_.getListOfString.map(_.asInstanceOf[Object]).asJava).asJava)
 }

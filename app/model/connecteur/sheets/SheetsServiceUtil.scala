@@ -30,9 +30,15 @@ trait ExecutionSheet extends Logging {
         } catch {
             case e: GoogleJsonResponseException => {
                 e.getStatusCode() match {
-                    case 400 => throw new ConnexionException(s"Erreur API Google sheet. Veuillez vérifier le lien fourni et l'id de la war\n${e.getContent()}")
+                    case 400 => {
+                        logger.error(s"Erreur API Google sheet. Veuillez vérifier le lien fourni et l'id de la war\n${e.getContent()}")
+                        throw new ConnexionException(s"Erreur API Google sheet. Veuillez vérifier le lien fourni et l'id de la war\n${e.getContent()}")
+                    }
                     case 429 => logger.info("Sommeil pendant 60s");Thread.sleep(60_000);execute(batch)
-                    case _ => throw new ConnexionException(e.getContent())
+                    case _ => {
+                        logger.error(s"${e.getContent()}")
+                        throw new ConnexionException(e.getContent())
+                    }
                 }
             }
             case e: Throwable => println(e);throw e;
