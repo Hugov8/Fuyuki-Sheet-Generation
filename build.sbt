@@ -6,6 +6,7 @@ version := "1.0-SNAPSHOT"
 Compile / scalaSource := baseDirectory.value / "app"
 Compile / resourceDirectory := baseDirectory.value / "resources"
 
+enablePlugins(JavaAppPackaging, DockerPlugin)
 import com.typesafe.sbt.packager.docker.DockerChmodType
 import com.typesafe.sbt.packager.docker.DockerPermissionStrategy
 dockerChmodType := DockerChmodType.UserGroupWriteExecute
@@ -16,7 +17,7 @@ Docker / packageName := "fuyuki-gen-sheet"
 Docker / version := "1.0"
 Docker / daemonUserUid  := None
 Docker / daemonUser := "daemon"
-Docker / dockerEntrypoint := "[./launch.sh]"
+Docker / dockerEntrypoint := Seq("[./launch.sh]")
 dockerExposedPorts := Seq(9000)
 dockerBaseImage := "openjdk:11-jre-slim"
 dockerRepository := sys.env.get("ecr_repo")
