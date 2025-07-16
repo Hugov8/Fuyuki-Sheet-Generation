@@ -16,7 +16,6 @@ import java.util.Arrays
 import com.google.api.services.sheets.v4.model.BatchUpdateValuesResponse
 import com.google.api.services.sheets.v4.model.BatchUpdateValuesRequest
 import model.exception.ConnexionException
-import play.api.Logger
 
 trait UpdateSheetUtilAbstractForm[T] extends ExecutionSheet{
     val sheetService: Sheets = SheetsServiceUtil.getSheetsService

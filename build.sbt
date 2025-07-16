@@ -16,16 +16,23 @@ Docker / packageName := "fuyuki-gen-sheet"
 Docker / version := "1.0"
 Docker / daemonUserUid  := None
 Docker / daemonUser := "daemon"
+// Docker / dockerEntrypoint := 
 dockerExposedPorts := Seq(9000)
 dockerBaseImage := "openjdk:11-jre-slim"
 dockerRepository := sys.env.get("ecr_repo")
 dockerUpdateLatest := true
 dockerEnvVars += ("API_KEY_RAYSHIFT" -> sys.env.get("API_KEY_RAYSHIFT").get)
 
+Compile / run / fork := true
+Compile / run / javaOptions += "-Dorg.slf4j.simpleLogger.logFile=logs/app.log"
+Compile / run / javaOptions += "-Dorg.slf4j.simpleLogger.defaultLogLevel=debug"
 
 scalaVersion := "2.13.11"
 
-libraryDependencies += guice
+
+libraryDependencies += "org.playframework" %% "play-json" % "3.0.5"
+libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.13"
+libraryDependencies += "org.slf4j" % "slf4j-simple" % "2.0.13"
 //requests dependency
 libraryDependencies += "com.lihaoyi" %% "requests" % "0.8.0"
 libraryDependencies += "io.lemonlabs" %% "scala-uri" % "4.0.3"
@@ -38,6 +45,3 @@ libraryDependencies += "com.google.auth" % "google-auth-library-credentials" % "
 libraryDependencies += "com.google.auth" % "google-auth-library-oauth2-http" % "1.11.0"
 //Google drive dependencies
 libraryDependencies += "com.google.apis" % "google-api-services-drive" % "v3-rev20220815-2.0.0"
-//Unit test
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % "test"
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test

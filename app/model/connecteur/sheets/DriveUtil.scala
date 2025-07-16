@@ -21,11 +21,11 @@ import com.google.api.services.drive.model.Permission;
 import com.google.api.client.googleapis.batch.json.JsonBatchCallback
 import com.google.api.client.http.HttpHeaders
 import com.google.api.client.googleapis.json.GoogleJsonError
-import play.api.Logger
+import org.slf4j.LoggerFactory
 
 
 object DriveUtil {
-    val logger: Logger = Logger(this.getClass())
+    val logger = LoggerFactory.getLogger(getClass)
     val APPLICATION_NAME: String = "Fuyuki-Generation-Sheet"
     def getDriveService: Drive = {
         val credential = GoogleAuthorizeUtil.authorize

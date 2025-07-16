@@ -4,12 +4,13 @@ import model.data._
 import model.data
 import model.exception.ConnexionException
 import model.exception.ParsingAtlasException
-import play.api.Logging
+import org.slf4j.LoggerFactory
 
-object AtlasParser extends Parser[Line] with Logging {
+object AtlasParser extends Parser[Line] {
     val arobase: Char = '＠'
     val dollar: Char = '＄'
     val interrogation: Char = '？'
+    val logger = LoggerFactory.getLogger(getClass)
 
     def parseMaster(script: List[String]): (List[Line], List[String]) = script match {
         case "？！" :: next => (List(), next)

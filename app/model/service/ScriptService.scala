@@ -11,11 +11,12 @@ import model.connecteur.sheets.SpreadSheetUtil
 import com.google.api.services.sheets.v4.model.Spreadsheet
 import model.connecteur.sheets.UpdateSheetUtil
 import model.connecteur.sheets.DriveUtil
-import play.api.Logging
 import model.connecteur.ScriptRequestAtlas
 import model.parser.ParserAssembler
+import org.slf4j.LoggerFactory
 
-trait ScriptService extends Logging{
+trait ScriptService {
+    val logger = LoggerFactory.getLogger(getClass)
     val warRequester: WarRequest
     val scriptRequester: ScriptRequest
     def generateWar(idWar: String, mail: String): String
@@ -40,7 +41,7 @@ object ScriptServiceImpl extends ScriptService {
         val war: War = warRequester.getWarFromId(idWar)
         val firstSheetName = UpdateSheetUtil.getIdsSheet(idSpreadSheet)(0)
         UpdateSheetUtil.sendListIdsRowToSheet(war.idRows.map(x => x.id), idSpreadSheet, firstSheetName)
-
+        
         war.idRows.filter(x => x.id.substring(0,2)!="91" && !skipRow.contains(x.id)).foreach(id => {
             val rowRayshift: Row = scriptRequester.getRowScript(id)
             val rowAtlas: Row = ScriptRequestAtlas.getRowScript(id)
