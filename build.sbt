@@ -23,16 +23,11 @@ dockerRepository := sys.env.get("ecr_repo")
 dockerUpdateLatest := true
 dockerEnvVars += ("API_KEY_RAYSHIFT" -> sys.env.get("API_KEY_RAYSHIFT").get)
 
-Compile / run / fork := true
-Compile / run / javaOptions += "-Dorg.slf4j.simpleLogger.logFile=logs/app.log"
-Compile / run / javaOptions += "-Dorg.slf4j.simpleLogger.defaultLogLevel=debug"
-
 scalaVersion := "2.13.11"
-
 
 libraryDependencies += "org.playframework" %% "play-json" % "3.0.5"
 libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.13"
-libraryDependencies += "org.slf4j" % "slf4j-simple" % "2.0.13"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.14"
 //requests dependency
 libraryDependencies += "com.lihaoyi" %% "requests" % "0.8.0"
 libraryDependencies += "io.lemonlabs" %% "scala-uri" % "4.0.3"
