@@ -11,21 +11,7 @@
     </encoder>
   </appender>
 
-  <!-- File Appender avec rotation quotidienne -->
-  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${LOG_DIR}/app.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <!-- fichier log par jour -->
-      <fileNamePattern>${LOG_DIR}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
-      <!-- nombre de fichiers à garder -->
-      <maxHistory>7</maxHistory>
-    </rollingPolicy>
-    <encoder>
-      <pattern>${LOG_PATTERN}</pattern>
-    </encoder>
-  </appender>
-
-    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_DIR}/app.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <level>ERROR</level>
