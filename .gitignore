@@ -16,5 +16,5 @@ metals.sbt
 .bloop/
 .env
 env.bat
-conf/ressources/client_secret_oauth.json
-conf/ressources/client_secret_service.json
+resources/client_secret_oauth.json
+resources/client_secret_service.json

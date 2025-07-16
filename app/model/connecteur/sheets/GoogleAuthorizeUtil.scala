@@ -21,13 +21,12 @@ import scala.io.BufferedSource
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.auth.http.HttpCredentialsAdapter
-import akka.http.javadsl.model.HttpRequest
 import com.google.api.client.http.HttpRequestInitializer
 import com.google.api.services.drive.DriveScopes
 
 object GoogleAuthorizeUtil {
     def authorizeUserAccount: Credential = {
-        val in: InputStream = getClass().getClassLoader().getResourceAsStream("ressources/client_secret_oauth.json")
+        val in: InputStream = getClass().getClassLoader().getResourceAsStream("client_secret_oauth.json")
         val clientSecrets: GoogleClientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), new InputStreamReader(in));
 
         val scopes: List[String] = Arrays.asList(SheetsScopes.SPREADSHEETS);
@@ -38,7 +37,7 @@ object GoogleAuthorizeUtil {
     }
 
     def authorizeServiceAccount: HttpRequestInitializer = {
-        val in: InputStream = getClass().getClassLoader().getResourceAsStream("ressources/client_secret_service.json")
+        val in: InputStream = getClass().getClassLoader().getResourceAsStream("client_secret_service.json")
 
         val scopes: List[String] = Arrays.asList(SheetsScopes.SPREADSHEETS, DriveScopes.DRIVE_FILE);
         val credentials = GoogleCredentials.fromStream(in).createScoped(scopes);//.createDelegated("hugo08320@gmail.com");

@@ -3,7 +3,8 @@ organization := "fr.hugov"
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+Compile / scalaSource := baseDirectory.value / "app"
+Compile / resourceDirectory := baseDirectory.value / "resources"
 
 import com.typesafe.sbt.packager.docker.DockerChmodType
 import com.typesafe.sbt.packager.docker.DockerPermissionStrategy
@@ -40,9 +41,3 @@ libraryDependencies += "com.google.apis" % "google-api-services-drive" % "v3-rev
 //Unit test
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % "test"
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-
-// Adds additional packages into Twirl
-//TwirlKeys.templateImports += "fr.hugov.controllers._"
-
-// Adds additional packages into conf/routes
-// play.sbt.routes.RoutesKeys.routesImport += "fr.hugov.binders._"
