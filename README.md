@@ -38,3 +38,8 @@ Webapp de génération de sheet de traduction
  ```bash
  docker run --rm -p 9000:9000 fuyuki-gen-sheet:1.0
  ```
+
+ Pour lancer le docket en mode batch
+  ```bash
+ docker run --rm fuyuki-gen-sheet:1.0 <oarams>
+ ```
