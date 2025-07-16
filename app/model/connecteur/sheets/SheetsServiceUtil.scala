@@ -15,6 +15,7 @@ import play.api.Logging
 
 object SheetsServiceUtil {
     val APPLICATION_NAME: String = "Fuyuki-Generation-Sheet"
+    val MASTER_SHEET_NAME: String = "MASTER"
     val baseURISheet: String = "https://docs.google.com/spreadsheets/d/"
     def getSheetsService: Sheets  = {
         val credential = GoogleAuthorizeUtil.authorize

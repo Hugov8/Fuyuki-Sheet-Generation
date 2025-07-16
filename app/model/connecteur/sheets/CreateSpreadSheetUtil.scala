@@ -15,7 +15,7 @@ trait SpreadSheetUtilAbstractForm {
 
 object SpreadSheetUtil extends SpreadSheetUtilAbstractForm with ExecutionSheet with Logging {
     override def createSpreadSheet(idWar: String): Spreadsheet = {
-        val masterSheet = new Sheet().setProperties(new SheetProperties().setTitle("MASTER"))
+        val masterSheet = new Sheet().setProperties(new SheetProperties().setTitle(SheetsServiceUtil.MASTER_SHEET_NAME))
         val spreadSheet = new Spreadsheet().setProperties(new SpreadsheetProperties().setTitle(idWar)).setSheets(ju.List.of(masterSheet))
         execute(sheetService.spreadsheets().create(spreadSheet)) match {
             case Some(x) => logger.info(s"Spreadsheet créé $x");x
