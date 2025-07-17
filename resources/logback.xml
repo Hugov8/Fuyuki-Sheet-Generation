@@ -2,7 +2,7 @@
 
   <!-- Définir un encodage commun -->
   <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" />
-  <property name="LOG_DIR" value="logs" />
+  <property name="LOG_DIR" value="/logs" />
 
   <!-- Console Appender -->
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

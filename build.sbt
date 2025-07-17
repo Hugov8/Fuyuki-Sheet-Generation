@@ -18,6 +18,7 @@ Docker / version := "1.0"
 Docker / daemonUserUid  := None
 Docker / daemonUser := "daemon"
 Docker / dockerEntrypoint := Seq("[./launch.sh]")
+dockerExposedVolumes += "/logs"
 dockerExposedPorts := Seq(9000)
 dockerBaseImage := "openjdk:11-jre-slim"
 dockerRepository := sys.env.get("ecr_repo")
