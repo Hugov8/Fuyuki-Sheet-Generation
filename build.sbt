@@ -14,7 +14,7 @@ dockerPermissionStrategy := DockerPermissionStrategy.CopyChown
 
 Docker / maintainer := "hugovedrine@hotmail.com"
 Docker / packageName := "fuyuki-gen-sheet"
-Docker / version := "1.0"
+Docker / version := "2.0"
 Docker / daemonUserUid  := None
 Docker / daemonUser := "daemon"
 Docker / dockerEntrypoint := Seq("[./launch.sh]")
