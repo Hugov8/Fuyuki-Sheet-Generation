@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSHKEY_PASSPHRASE }}
-          source: ${{ steps.changed-files.outputs.all_changed_files }}
+          source: .
           target: "/home/${{ secrets.USERNAME }}/Fuyuki-Sheet-Generation"
 
       - name: Executing remote command
