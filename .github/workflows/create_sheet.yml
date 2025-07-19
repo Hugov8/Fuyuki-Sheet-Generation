@@ -34,10 +34,12 @@ jobs:
             passphrase: ${{ secrets.SSHKEY_PASSPHRASE }}
             envs: API_KEY_RAYSHIFT
             script: |
-                CONTAINER_NAME=${{ github.event.repository.name }}
+                CONTAINER_NAME_UPPER=${{ github.event.repository.name }}
+                CONTAINER_NAME=$(echo "$CONTAINER_NAME_UPPER" | tr '[:upper:]' '[:lower:]')
+
                 # Nom de l'image Docker à utiliser
                 IMAGE_NAME_UPPER=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:2.0
-                IMAGE_NAME=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
+                IMAGE_NAME=$(echo "$IMAGE_NAME_UPPER" | tr '[:upper:]' '[:lower:]')
 
                 echo "🔍 Vérification du container existant..."
                 if [ "$(docker ps -aq -f name=^${CONTAINER_NAME}$)" ]; then
