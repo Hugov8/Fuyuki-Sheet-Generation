@@ -26,13 +26,14 @@ jobs:
           uses: appleboy/ssh-action@master
           env:
             API_KEY_RAYSHIFT: ${{ secrets.API_KEY_RAYSHIFT }}
+            GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             host: ${{ secrets.HOST }}
             USERNAME: ${{ secrets.USERNAME }}
             PORT: ${{ secrets.PORT }}
             KEY: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.SSHKEY_PASSPHRASE }}
-            envs: API_KEY_RAYSHIFT
+            envs: API_KEY_RAYSHIFT, GHCR_TOKEN
             script: |
                 CONTAINER_NAME_UPPER=${{ github.event.repository.name }}
                 CONTAINER_NAME=$(echo "$CONTAINER_NAME_UPPER" | tr '[:upper:]' '[:lower:]')
@@ -48,7 +49,10 @@ jobs:
                 echo "✅ Aucun container existant avec ce nom."
                 echo "🧹 Suppression du container $CONTAINER_NAME..."
                 docker rm $CONTAINER_NAME
-                docker rmi $IMAGE_NAME 
+                docker rmi $IMAGE_NAME
+
+                echo "Connexion au docker repo"
+                echo $GHCR_TOKEN | docker login ghcr.io -u ton-username --password-stdin
                 echo "🚀 Démarrage d'un nouveau container $CONTAINER_NAME..."
                 docker run --rm -e API_KEY_RAYSHIFT=$API_KEY_RAYSHIFT -v logs_sheet_gen:/logs --name $CONTAINER_NAME  $IMAGE_NAME \
                 CREATION ${{ github.event.inputs.id-war }} ${{ github.event.inputs.mail }}
