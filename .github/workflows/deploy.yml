@@ -49,7 +49,9 @@ jobs:
       - name: Set image name
         id: image-name
         run: |
-          echo "IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/fuyuki-gen-sheet:2.0" >> $GITHUB_ENV
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:lates2.0
+          IMAGE_NAME_LOWER=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_NAME=$IMAGE_NAME_LOWER" >> $GITHUB_ENV
 
       - name: Build Docker image using SBT
         env:
