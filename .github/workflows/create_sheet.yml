@@ -36,7 +36,8 @@ jobs:
             script: |
                 CONTAINER_NAME=${{ github.event.repository.name }}
                 # Nom de l'image Docker à utiliser
-                IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:2.0
+                IMAGE_NAME_UPPER=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:2.0
+                IMAGE_NAME=$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
 
                 echo "🔍 Vérification du container existant..."
                 if [ "$(docker ps -aq -f name=^${CONTAINER_NAME}$)" ]; then
