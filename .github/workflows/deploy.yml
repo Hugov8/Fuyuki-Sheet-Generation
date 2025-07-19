@@ -61,8 +61,7 @@ jobs:
 
       - name: Build Docker image using SBT
         env:
-            LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}  
-            API_KEY_RAYSHIFT: ${{ secrets.API_KEY_RAYSHIFT }}
+            LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
         run: chmod 777 ./decrypt.sh && ./decrypt.sh && sbt Docker/publishLocal
 
       - name: Tag image for GHCR

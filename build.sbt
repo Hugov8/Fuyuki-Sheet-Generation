@@ -23,7 +23,6 @@ dockerExposedPorts := Seq(9000)
 dockerBaseImage := "openjdk:11-jre-slim"
 dockerRepository := sys.env.get("ecr_repo")
 dockerUpdateLatest := true
-dockerEnvVars += ("API_KEY_RAYSHIFT" -> sys.env.get("API_KEY_RAYSHIFT").get)
 
 scalaVersion := "2.13.11"
 
