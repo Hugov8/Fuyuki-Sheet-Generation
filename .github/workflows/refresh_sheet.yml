@@ -1,0 +1,57 @@
+name: Refresh sheet
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+        inputs:
+            id-spreadsheet:
+              description: 'ID de la spreadsheet'
+              required: true
+            id-war:
+              description: 'ID de la war a créer, visible sur atlas'
+              required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+        - name: Checkout repository 
+          uses: actions/checkout@v3
+        
+        - name: Executing remote command
+          uses: appleboy/ssh-action@master
+          env:
+            API_KEY_RAYSHIFT: ${{ secrets.API_KEY_RAYSHIFT }}
+          with:
+            host: ${{ secrets.HOST }}
+            USERNAME: ${{ secrets.USERNAME }}
+            PORT: ${{ secrets.PORT }}
+            KEY: ${{ secrets.SSH_KEY }}
+            passphrase: ${{ secrets.SSHKEY_PASSPHRASE }}
+            envs: API_KEY_RAYSHIFT
+            script: |
+                CONTAINER_NAME_UPPER=${{ github.event.repository.name }}
+                CONTAINER_NAME=$(echo "$CONTAINER_NAME_UPPER" | tr '[:upper:]' '[:lower:]')
+
+                # Nom de l'image Docker à utiliser
+                IMAGE_NAME_UPPER=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:2.0
+                IMAGE_NAME=$(echo "$IMAGE_NAME_UPPER" | tr '[:upper:]' '[:lower:]')
+
+                echo "🔍 Vérification du container existant..."
+                if [ "$(docker ps -aq -f name=^${CONTAINER_NAME}$)" ]; then
+                echo "🛑 $CONTAINER_NAME déjà en cours, relancer lorsque la précédente génération est terminée"
+                else
+                echo "✅ Aucun container existant avec ce nom."
+                echo "🧹 Suppression du container $CONTAINER_NAME..."
+                docker rm $CONTAINER_NAME
+                docker rmi $IMAGE_NAME 
+                echo "🚀 Démarrage d'un nouveau container $CONTAINER_NAME..."
+                docker run --rm -e API_KEY_RAYSHIFT=$API_KEY_RAYSHIFT -v logs_sheet_gen:/logs --name $CONTAINER_NAME  $IMAGE_NAME \
+                REFRESH ${{ github.event.inputs.id-war }} ${{ github.event.inputs.id-spreadsheet }}
+                fi
+
+
