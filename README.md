@@ -38,3 +38,22 @@ Webapp de génération de sheet de traduction
  ```bash
  docker run --rm -p 9000:9000 fuyuki-gen-sheet:1.0
  ```
+
+ Pour lancer le docket en mode batch
+  ```bash
+ docker run --rm -v logs_sheet_gen:/logs  fuyuki-gen-sheet <params>
+ ```
+
+ Création du volume pour les logs
+ ```bash
+ docker create volume logs_sheet_gen
+ ```
+
+ Visualiser les logs
+ ```bash
+ docker run --rm -v logs_sheet_gen:logs alpine cat /logs/app.log
+ ```
+
+
+
+

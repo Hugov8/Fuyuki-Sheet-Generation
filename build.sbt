@@ -3,8 +3,10 @@ organization := "fr.hugov"
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+Compile / scalaSource := baseDirectory.value / "app"
+Compile / resourceDirectory := baseDirectory.value / "resources"
 
+enablePlugins(JavaAppPackaging, DockerPlugin)
 import com.typesafe.sbt.packager.docker.DockerChmodType
 import com.typesafe.sbt.packager.docker.DockerPermissionStrategy
 dockerChmodType := DockerChmodType.UserGroupWriteExecute
@@ -12,19 +14,21 @@ dockerPermissionStrategy := DockerPermissionStrategy.CopyChown
 
 Docker / maintainer := "hugovedrine@hotmail.com"
 Docker / packageName := "fuyuki-gen-sheet"
-Docker / version := "1.0"
+Docker / version := "2.0"
 Docker / daemonUserUid  := None
 Docker / daemonUser := "daemon"
+Docker / dockerEntrypoint := Seq("[./launch.sh]")
+dockerExposedVolumes += "/logs"
 dockerExposedPorts := Seq(9000)
 dockerBaseImage := "openjdk:11-jre-slim"
 dockerRepository := sys.env.get("ecr_repo")
 dockerUpdateLatest := true
-dockerEnvVars += ("API_KEY_RAYSHIFT" -> sys.env.get("API_KEY_RAYSHIFT").get)
-
 
 scalaVersion := "2.13.11"
 
-libraryDependencies += guice
+libraryDependencies += "org.playframework" %% "play-json" % "3.0.5"
+libraryDependencies += "org.slf4j" % "slf4j-api" % "2.0.13"
+libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.4.14"
 //requests dependency
 libraryDependencies += "com.lihaoyi" %% "requests" % "0.8.0"
 libraryDependencies += "io.lemonlabs" %% "scala-uri" % "4.0.3"
@@ -37,12 +41,3 @@ libraryDependencies += "com.google.auth" % "google-auth-library-credentials" % "
 libraryDependencies += "com.google.auth" % "google-auth-library-oauth2-http" % "1.11.0"
 //Google drive dependencies
 libraryDependencies += "com.google.apis" % "google-api-services-drive" % "v3-rev20220815-2.0.0"
-//Unit test
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % "test"
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-
-// Adds additional packages into Twirl
-//TwirlKeys.templateImports += "fr.hugov.controllers._"
-
-// Adds additional packages into conf/routes
-// play.sbt.routes.RoutesKeys.routesImport += "fr.hugov.binders._"

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import com.google.api.services.sheets.v4.model.BatchUpdateValuesRequest
 import model.exception.ConnexionException
-import play.api.Logging
+import org.slf4j.LoggerFactory
 
 object SheetsServiceUtil {
     val APPLICATION_NAME: String = "Fuyuki-Generation-Sheet"
@@ -23,7 +23,8 @@ object SheetsServiceUtil {
     }
 }
 
-trait ExecutionSheet extends Logging {
+trait ExecutionSheet  {
+    val logger = LoggerFactory.getLogger(getClass)
     
     def execute[T](batch: AbstractGoogleClientRequest[T]): Option[T] = {
         try{

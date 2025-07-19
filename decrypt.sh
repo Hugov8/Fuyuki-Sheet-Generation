@@ -4,9 +4,9 @@
 # --yes to assume "yes" for questions
 
 gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" \
---output conf/ressources/client_secret_oauth.json \
-conf/ressources/client_secret_oauth.json.gpg
+--output resources/client_secret_oauth.json \
+resources/client_secret_oauth.json.gpg
 
 gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" \
---output conf/ressources/client_secret_service.json \
-conf/ressources/client_secret_service.json.gpg
+--output resources/client_secret_service.json \
+resources/client_secret_service.json.gpg
