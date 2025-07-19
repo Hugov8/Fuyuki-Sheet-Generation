@@ -38,6 +38,8 @@ jobs:
                 CONTAINER_NAME_UPPER=${{ github.event.repository.name }}
                 CONTAINER_NAME=$(echo "$CONTAINER_NAME_UPPER" | tr '[:upper:]' '[:lower:]')
 
+                USERNAME=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+
                 # Nom de l'image Docker à utiliser
                 IMAGE_NAME_UPPER=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:2.0
                 IMAGE_NAME=$(echo "$IMAGE_NAME_UPPER" | tr '[:upper:]' '[:lower:]')
@@ -52,7 +54,7 @@ jobs:
                 docker rmi $IMAGE_NAME
 
                 echo "Connexion au docker repo"
-                echo $GHCR_TOKEN | docker login ghcr.io -u ton-username --password-stdin
+                echo $GHCR_TOKEN | docker login ghcr.io -u $USERNAME --password-stdin
                 echo "🚀 Démarrage d'un nouveau container $CONTAINER_NAME..."
                 docker run --rm -e API_KEY_RAYSHIFT=$API_KEY_RAYSHIFT -v logs_sheet_gen:/logs --name $CONTAINER_NAME  $IMAGE_NAME \
                 CREATION ${{ github.event.inputs.id-war }} ${{ github.event.inputs.mail }}
