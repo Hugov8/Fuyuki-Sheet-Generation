@@ -19,7 +19,7 @@ object SpreadSheetUtil extends SpreadSheetUtilAbstractForm with ExecutionSheet {
         val masterSheet = new Sheet().setProperties(new SheetProperties().setTitle(SheetsServiceUtil.MASTER_SHEET_NAME))
         val spreadSheet = new Spreadsheet().setProperties(new SpreadsheetProperties().setTitle(idWar)).setSheets(ju.List.of(masterSheet))
         execute(sheetService.spreadsheets().create(spreadSheet)) match {
-            case Some(x) => logger.info(s"Spreadsheet créé $x");x
+            case Some(x) => logger.info(s"Spreadsheet créé ${x.getProperties().getTitle()}");x
             case None => throw new ConnexionException(s"Création échoué pour war = $idWar")
         }
     }
