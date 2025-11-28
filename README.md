@@ -1,5 +1,6 @@
 # Fuyuki-Generation-Sheet
-Webapp de génération de sheet de traduction
+Batcg de génération de sheet de traduction sur Google sheet
+
  ## Développement
  Java 11 est recommandé
  
